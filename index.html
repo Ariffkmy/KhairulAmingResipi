@@ -62,44 +62,27 @@
         <img src="profile.jpg" alt="Profile Picture">
     </div>
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary option-button">Nasi</button>
-        <button type="button" class="btn btn-secondary option-button">Mee</button>
-        <button type="button" class="btn btn-secondary option-button">Dessert</button>
-        <button type="button" class="btn btn-secondary option-button">Lauk-pauk</button>
-        <button type="button" class="btn btn-secondary option-button">Air</button>
+        <button type="button" class="btn btn-secondary option-button" onclick="updateIframesWithUrls('nasi')">Nasi</button>
+        <button type="button" class="btn btn-secondary option-button" onclick="updateIframesWithUrls('mee')">Mee</button>
+        <button type="button" class="btn btn-secondary option-button" onclick="updateIframesWithUrls('dessert')">Dessert</button>
+        <button type="button" class="btn btn-secondary option-button" onclick="updateIframesWithUrls('lauk-pauk')">Lauk-pauk</button>
+        <button type="button" class="btn btn-secondary option-button" onclick="updateIframesWithUrls('air')">Air</button>
+
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
-        <div class="col-md-4">
-            <div class="recipe-card"></div>
-        </div>
+        <div class="col-md-4 mt-3 mb-3">
+            <div class="embed-responsive embed-responsive-1by1">
+                <iframe class="embed-responsive-item" src="https://tinyurl.com/22exbrr7" allowfullscreen></iframe>
+            </div>
+       </div>
+ 
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="urls.js"></script>
 <script src="script.js"></script>
-</body>
 </html>
