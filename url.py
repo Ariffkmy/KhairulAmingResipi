@@ -1,23 +1,42 @@
-import pyshorteners
+from bs4 import BeautifulSoup
+import pandas as pd
 
-def shorten_urls(url_list):
-    s = pyshorteners.Shortener()
-    short_urls = []
-    
-    for url in url_list:
-        short_url = s.tinyurl.short(url)
-        short_urls.append(short_url)
-        
-    return short_urls
+# Function to extract video IDs from embedded Instagram links
+def extract_video_ids(html_content, sheet_name):
+    if not isinstance(html_content, str):
+        return []  # Return empty list if the content is not a string
+    soup = BeautifulSoup(html_content, 'html.parser')
+    blockquotes = soup.find_all('blockquote', class_='instagram-media')
+    video_ids = []
+    for blockquote in blockquotes:
+        permalink = blockquote.get('data-instgrm-permalink')
+        if permalink:
+            video_id = permalink.split('/')[-2]  # Extract video ID from permalink
+            video_ids.append((video_id, sheet_name))
+    return video_ids
 
-# Test the function
-lst = [
-    "https://instagram.fkul16-1.fna.fbcdn.net/o1/v/t16/f2/m69/An9AUrC44hWqIozmROSIec8tM8NWiF4ms1vLRPKDBZut5ypo7TCN-6mxlXq2Vql6WuRrC7r6rOLaHcxhKVZ2NjVa.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uY2xpcHMuYzIuNzIwLmJhc2VsaW5lIn0&_nc_ht=instagram.fkul16-1.fna.fbcdn.net&_nc_cat=103&vs=5013089498770663_3161283855&_nc_vs=HBksFQIYOnBhc3N0aHJvdWdoX2V2ZXJzdG9yZS9HSUNXbUFEbzR0X0t5MzRjQUhtRk5aMHo4TUIyYnFfRUFBQUYVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dBMGZseEFNTGlGVzg1QUFBSEJUVDdmYU5MdzVicV9FQUFBRhUCAsgBACgAGAAbABUAACb2rInH49z0PxUCKAJDMywXQE4AAAAAAAAYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HAA%3D%3D&ccb=9-4&oh=00_AYChhTtVdwGgTQAyOkOdNMrSHOrDCdVrdWRpSJHxIt8nJQ&oe=6647D017&_nc_sid=bc0c2c",
-    "https://instagram.fkul16-2.fna.fbcdn.net/o1/v/t16/f2/m69/An9pgBpFDFkeZqOzBeKT12WqetaqDZa-u48ENAujg5jx4xxgjJbgsPG1vs6rpYbFruPe-A88sXhKJNaHBG-LtkqI.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uY2xpcHMuYzIuNzIwLmJhc2VsaW5lIn0&_nc_ht=instagram.fkul16-2.fna.fbcdn.net&_nc_cat=100&vs=629652574774635_2646729716&_nc_vs=HBksFQIYOnBhc3N0aHJvdWdoX2V2ZXJzdG9yZS9HSUNXbUFBckFXU1RsVTBCQVBxOUZ2NklFSXMwYnFfRUFBQUYVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dEOWVXUkF6WWRqcGZLWUVBTUpCSWpUYTF1RTBicV9FQUFBRhUCAsgBACgAGAAbABUAACas%2B%2Fz%2B7YDiPxUCKAJDMywXQE4AAAAAAAAYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HAA%3D%3D&ccb=9-4&oh=00_AYAVrw_R3mei1Jitwe3wl_p5UnqXFxsjVDSg17sXLfuBRw&oe=6647D4EC&_nc_sid=bc0c2c",
-    "https://instagram.fkul16-3.fna.fbcdn.net/o1/v/t16/f1/m84/484645A2A72A65F732308F346B0F0EBE_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uZmVlZC5jMi43MjAuYmFzZWxpbmUifQ&_nc_ht=instagram.fkul16-3.fna.fbcdn.net&_nc_cat=105&vs=1121381955692054_926332866&_nc_vs=HBksFQIYTGlnX2JhY2tmaWxsX3RpbWVsaW5lX3ZvZC80ODQ2NDVBMkE3MkE2NUY3MzIzMDhGMzQ2QjBGMEVCRV92aWRlb19kYXNoaW5pdC5tcDQVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dQcUU1eFpSSVQ2alhoNEJBT1M2dk5zclNfc0hicGt3QUFBRhUCAsgBACgAGAAbABUAACbG7d21sYu5PxUCKAJDMywXQE4EOVgQYk4YEmRhc2hfYmFzZWxpbmVfMV92MREAdeoHAA%3D%3D&ccb=9-4&oh=00_AYDZ0lwRMluwF8_R-PI_dfIHxr76tt5NnpnpwcyxSL4JUQ&oe=6647D511&_nc_sid=bc0c2c",
-    "https://instagram.fkul16-2.fna.fbcdn.net/o1/v/t16/f1/m84/2949984E89B7B72C7A4358F7B5B345A6_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uZmVlZC5jMi43MjAuYmFzZWxpbmUifQ&_nc_ht=instagram.fkul16-2.fna.fbcdn.net&_nc_cat=100&vs=188314700971860_1605022273&_nc_vs=HBksFQIYTGlnX2JhY2tmaWxsX3RpbWVsaW5lX3ZvZC8yOTQ5OTg0RTg5QjdCNzJDN0E0MzU4RjdCNUIzNDVBNl92aWRlb19kYXNoaW5pdC5tcDQVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dKSUxNeGZncndkOTVVOENBQ05Wc0ItcTNFeEZicGt3QUFBRhUCAsgBACgAGAAbABUAACbY%2F5b%2BqYqWQBUCKAJDMywXQE1zMzMzMzMYEmRhc2hfYmFzZWxpbmVfMV92MREAdeoHAA%3D%3D&ccb=9-4&oh=00_AYCMnrKcNv--CqEmGlL9x9-YAJgkZxDqXdOd7WebiOMkFg&oe=6647E50C&_nc_sid=bc0c2c",
-    "https://instagram.fkul16-1.fna.fbcdn.net/o1/v/t16/f1/m84/6C4F167C5B427B0D3E11B4B2D2A281B3_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uZmVlZC5jMi42NDAuYmFzZWxpbmUifQ&_nc_ht=instagram.fkul16-1.fna.fbcdn.net&_nc_cat=103&vs=1502243896982619_1870262448&_nc_vs=HBksFQIYTGlnX2JhY2tmaWxsX3RpbWVsaW5lX3ZvZC82QzRGMTY3QzVCNDI3QjBEM0UxMUI0QjJEMkEyODFCM192aWRlb19kYXNoaW5pdC5tcDQVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dCM2hkUllDa2wxbEkzQUNBRG5CRDE2c3pjcHRicGt3QUFBRhUCAsgBACgAGAAbABUAACb0kc%2Bcs4z4AhUCKAJDMywXQE3qn752yLQYEmRhc2hfYmFzZWxpbmVfMV92MREAdeoHAA%3D%3D&ccb=9-4&oh=00_AYA54Pen8sJ2dNqVlqx-tqWimmu6fr2YceY6ZAWv6kU65w&oe=6647DF96&_nc_sid=bc0c2c",
-    "https://instagram.fkul16-2.fna.fbcdn.net/o1/v/t16/f1/m84/344F0E36F58C936243810A6246692BB4_video_dashinit.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uZmVlZC5jMi42NDAuYmFzZWxpbmUifQ&_nc_ht=instagram.fkul16-2.fna.fbcdn.net&_nc_cat=110&vs=1147561759386038_2323203748&_nc_vs=HBksFQIYTGlnX2JhY2tmaWxsX3RpbWVsaW5lX3ZvZC8zNDRGMEUzNkY1OEM5MzYyNDM4MTBBNjI0NjY5MkJCNF92aWRlb19kYXNoaW5pdC5tcDQVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dPYjRsUlpzR0xSVjd6b0NBTVZoRlZSUFZZMDdicGt3QUFBRhUCAsgBACgAGAAbABUAACbE4NWtvraZARUCKAJDMywXQE3u2RaHKwIYEmRhc2hfYmFzZWxpbmVfMV92MREAdeoHAA%3D%3D&ccb=9-4&oh=00_AYBMwH-knRCfLr4tf0WXG2nXXU3QkMIMxPVdAWNEBacOtA&oe=66480107&_nc_sid=bc0c2c"
-]
+# Read HTML content from each sheet of the Excel file
+def read_excel_sheets(filename):
+    with pd.ExcelFile(filename) as xls:
+        sheet_names = xls.sheet_names
+        video_ids_all = []
+        for sheet_name in sheet_names:
+            html_contents = pd.read_excel(xls, sheet_name, header=None).values.tolist()
+            video_ids_sheet = []
+            for html_content in html_contents:
+                video_ids_sheet.extend(extract_video_ids(str(html_content[0]), sheet_name))  # Convert to string before parsing
+            video_ids_all.extend(video_ids_sheet)
+    return video_ids_all
 
-print(shorten_urls(lst))
+# Read from Excel file and extract video IDs from each sheet
+filename = 'inputka.xlsx'  # Adjust the filename as needed
+video_ids_all = read_excel_sheets(filename)
+
+# Create a DataFrame to store the video IDs
+df = pd.DataFrame(video_ids_all, columns=['Video ID', 'Sheet Name'])
+
+# Write the DataFrame to an Excel file
+output_filename = 'instagram_video_ids_with_sheet.xlsx'
+df.to_excel(output_filename, index=False)
+
+print(f"Video IDs extracted and saved to '{output_filename}'")

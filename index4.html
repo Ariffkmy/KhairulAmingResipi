@@ -12,6 +12,19 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="script.js"></script>
+
+  <style>
+    .video-container {
+        overflow: hidden;
+    }
+
+    .video-iframe {
+        width: 100%;
+        height: 200px; /* Adjust height as needed */
+    }
+  </style>
+
   
 </head>
 <body>
@@ -36,43 +49,32 @@
 
 <!-- Body content -->
 
-<div class="container d-flex flex-column justify-content-center align-items-center " style="margin-top: 50px;">
-
-
+<div class="container d-flex flex-column justify-content-center align-items-center" style="margin-top: 50px;">
   <h2 class="text-center">Masaklah</h2>
-    <p>Developed by Ariff Hakimi // Ariffkmy</p>
+  <p>Developed by Ariff Hakimi // Ariffkmy</p>
    
-  <div class="dropdown">
+  <div class="dropdown mb-3" style="margin-top: 20px;">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
       Pilihan Resipi
     </button>
     <div class="dropdown-menu">
       <a class="dropdown-item" href="#">Nasi</a>
+      <a class="dropdown-item" href="#">Mee</a>
+      <a class="dropdown-item" href="#">Thai</a>
+      <a class="dropdown-item" href="#">Western</a>
       <a class="dropdown-item" href="#">Ayam</a>
       <a class="dropdown-item" href="#">Daging</a>
+      <a class="dropdown-item" href="#">Sup</a>
+      <a class="dropdown-item" href="#">Minum Petang</a>
+      <a class="dropdown-item" href="#">Ikan & Seafood</a>
+      <a class="dropdown-item" href="#">Dessert</a>
+      <a class="dropdown-item" href="#">Lain-lain</a>
     </div>
   </div>
-</br>
+
   <h3><p id="selectedValue"></p></h3>
-  
-
+  <div id="videoContainer" class="container video-container" style="margin-top: 40px;"></div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        $(".dropdown-item").click(function() {
-            var selectedValue = $(this).text();
-            if (selectedValue === 'Nasi') {
-                selectedValue += ' ' + String.fromCodePoint(0x1F35A); // Append rice bowl emoji when 'Nasi' is selected
-            } else if (selectedValue === 'Daging') {
-                selectedValue += ' ' + String.fromCodePoint(0x1F969); // Append meat emoji when 'Daging' is selected
-            } else if (selectedValue === 'Ayam') {
-                selectedValue += ' ' + String.fromCodePoint(0x1F357); // Append poultry leg emoji when 'Ayam' is selected
-            }
-            $("#selectedValue").text(selectedValue);
-        });
-    });
-</script>
 
 </body>
 </html>
