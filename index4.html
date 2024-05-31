@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Masaklah</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <!-- JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Main</a>
+      </li> 
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Body content -->
+
+<div class="container d-flex flex-column justify-content-center align-items-center " style="margin-top: 50px;">
+
+
+  <h2 class="text-center">Masaklah</h2>
+    <p>Developed by Ariff Hakimi // Ariffkmy</p>
+   
+  <div class="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      Pilihan Resipi
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Nasi</a>
+      <a class="dropdown-item" href="#">Ayam</a>
+      <a class="dropdown-item" href="#">Daging</a>
+    </div>
+  </div>
+</br>
+  <h3><p id="selectedValue"></p></h3>
+  
+
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".dropdown-item").click(function() {
+            var selectedValue = $(this).text();
+            if (selectedValue === 'Nasi') {
+                selectedValue += ' ' + String.fromCodePoint(0x1F35A); // Append rice bowl emoji when 'Nasi' is selected
+            } else if (selectedValue === 'Daging') {
+                selectedValue += ' ' + String.fromCodePoint(0x1F969); // Append meat emoji when 'Daging' is selected
+            } else if (selectedValue === 'Ayam') {
+                selectedValue += ' ' + String.fromCodePoint(0x1F357); // Append poultry leg emoji when 'Ayam' is selected
+            }
+            $("#selectedValue").text(selectedValue);
+        });
+    });
+</script>
+
+</body>
+</html>
